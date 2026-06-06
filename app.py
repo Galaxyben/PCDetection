@@ -125,7 +125,7 @@ QTextEdit#preview {
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PCDetection — Escáner de Hardware")
+        self.setWindowTitle("PCDetection — Hardware Scanner")
         self.setMinimumSize(620, 520)
         self.resize(680, 580)
 
@@ -135,7 +135,6 @@ class MainWindow(QMainWindow):
             icon_path = os.path.join(sys._MEIPASS, "icon.png")
         if os.path.exists(icon_path):
             self.setWindowIcon(QIcon(icon_path))
-
 
         self._markdown_content = ""
         self._bridge = SignalBridge()
@@ -157,7 +156,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(title)
 
         # Subtitle
-        subtitle = QLabel("Analiza todos los componentes de tu PC y genera un reporte Markdown.")
+        subtitle = QLabel("Scan all your PC components and generate a Markdown report.")
         subtitle.setObjectName("subtitle")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(subtitle)
@@ -165,7 +164,7 @@ class MainWindow(QMainWindow):
         layout.addSpacing(12)
 
         # Scan button
-        self.scan_btn = QPushButton("🔍  Analizar Hardware")
+        self.scan_btn = QPushButton("🔍  Scan Hardware")
         self.scan_btn.setObjectName("scanBtn")
         self.scan_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.scan_btn.clicked.connect(self._start_scan)
@@ -175,21 +174,21 @@ class MainWindow(QMainWindow):
         self.preview = QTextEdit()
         self.preview.setObjectName("preview")
         self.preview.setReadOnly(True)
-        self.preview.setPlaceholderText("El reporte aparecerá aquí después del análisis…")
+        self.preview.setPlaceholderText("The report will appear here after scanning…")
         layout.addWidget(self.preview, stretch=1)
 
         # Button row (Save + Copy)
         btn_row = QHBoxLayout()
         btn_row.setSpacing(10)
 
-        self.save_btn = QPushButton("💾  Guardar (.md)")
+        self.save_btn = QPushButton("💾  Save (.md)")
         self.save_btn.setObjectName("saveBtn")
         self.save_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.save_btn.setEnabled(False)
         self.save_btn.clicked.connect(self._save_report)
         btn_row.addWidget(self.save_btn)
 
-        self.copy_btn = QPushButton("📋  Copiar Texto")
+        self.copy_btn = QPushButton("📋  Copy Text")
         self.copy_btn.setObjectName("copyBtn")
         self.copy_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.copy_btn.setEnabled(False)
@@ -199,7 +198,7 @@ class MainWindow(QMainWindow):
         layout.addLayout(btn_row)
 
         # Status bar label
-        self.status_label = QLabel("Listo.")
+        self.status_label = QLabel("Ready.")
         self.status_label.setObjectName("status")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
@@ -209,8 +208,8 @@ class MainWindow(QMainWindow):
         self.scan_btn.setEnabled(False)
         self.save_btn.setEnabled(False)
         self.copy_btn.setEnabled(False)
-        self.scan_btn.setText("⏳  Analizando…")
-        self.status_label.setText("Obteniendo información del sistema…")
+        self.scan_btn.setText("⏳  Scanning…")
+        self.status_label.setText("Retrieving system information…")
         self.status_label.setStyleSheet("color: #d29922;")
         self.preview.clear()
 
@@ -222,7 +221,7 @@ class MainWindow(QMainWindow):
             detector = HardwareDetector()
             md = detector.generate_markdown()
             self._bridge.preview_ready.emit(md)
-            self._bridge.finished.emit("Análisis completado.", True)
+            self._bridge.finished.emit("Scan completed.", True)
         except Exception as e:
             self._bridge.finished.emit(f"Error: {e}", False)
 
@@ -232,7 +231,7 @@ class MainWindow(QMainWindow):
 
     def _on_scan_finished(self, message: str, success: bool):
         self.scan_btn.setEnabled(True)
-        self.scan_btn.setText("🔍  Analizar Hardware")
+        self.scan_btn.setText("🔍  Scan Hardware")
         if success:
             self.status_label.setStyleSheet("color: #3fb950;")
             self.save_btn.setEnabled(True)
@@ -244,11 +243,11 @@ class MainWindow(QMainWindow):
     # ---------- Save ----------
     def _save_report(self):
         date_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        default_name = f"Reporte_Hardware_{date_str}.md"
+        default_name = f"Hardware_Report_{date_str}.md"
 
         path, _ = QFileDialog.getSaveFileName(
-            self, "Guardar Reporte", default_name,
-            "Markdown (*.md);;Todos los archivos (*)"
+            self, "Save Report", default_name,
+            "Markdown (*.md);;All files (*)"
         )
         if not path:
             return
@@ -256,17 +255,17 @@ class MainWindow(QMainWindow):
         try:
             with open(path, "w", encoding="utf-8") as f:
                 f.write(self._markdown_content)
-            self.status_label.setText(f"Guardado: {os.path.basename(path)}")
+            self.status_label.setText(f"Saved: {os.path.basename(path)}")
             self.status_label.setStyleSheet("color: #3fb950;")
         except Exception as e:
-            self.status_label.setText(f"Error al guardar: {e}")
+            self.status_label.setText(f"Error saving file: {e}")
             self.status_label.setStyleSheet("color: #f85149;")
 
     # ---------- Copy to Clipboard ----------
     def _copy_to_clipboard(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self._markdown_content)
-        self.status_label.setText("¡Copiado al portapapeles!")
+        self.status_label.setText("Copied to clipboard!")
         self.status_label.setStyleSheet("color: #d2a8ff;")
 
 

@@ -554,13 +554,13 @@ class HardwareDetector:
     # Markdown Report Generator
     # ═══════════════════════════════════════════════════════
     def generate_markdown(self):
-        md = "# 🖥️ Reporte de Hardware\n\n"
-        md += f"**Fecha de generación:** {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+        md = "# 🖥️ Hardware Report\n\n"
+        md += f"**Generation Date:** {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
         md += "---\n\n"
 
         # System Summary
         sys_info = self.get_system_info()
-        md += "## 📋 Sistema\n"
+        md += "## 📋 System\n"
         for key, val in sys_info.items():
             md += f"- **{key}:** {val}\n"
         md += "\n"
@@ -568,95 +568,95 @@ class HardwareDetector:
         # BIOS
         md += "## 🔧 BIOS\n"
         for bios in self.get_bios_info():
-            md += f"- **Fabricante:** {bios['Manufacturer']}\n"
-            md += f"- **Versión:** {bios['Version']}\n"
-            md += f"- **Fecha:** {bios['Release Date']}\n"
+            md += f"- **Manufacturer:** {bios['Manufacturer']}\n"
+            md += f"- **Version:** {bios['Version']}\n"
+            md += f"- **Release Date:** {bios['Release Date']}\n"
         md += "\n"
 
         # CPU
-        md += "## 💻 Procesador (CPU)\n"
+        md += "## 💻 Processor (CPU)\n"
         for cpu in self.get_cpu_info():
-            md += f"- **Modelo:** {cpu['Name']}\n"
-            md += f"- **Núcleos:** {cpu['Cores']} ({cpu['Logical Processors']} Hilos)\n"
-            md += f"- **Velocidad Máxima:** {cpu['Max Clock Speed']}\n"
-            md += f"- **Caché L2:** {cpu['L2 Cache']} | **Caché L3:** {cpu['L3 Cache']}\n"
+            md += f"- **Model:** {cpu['Name']}\n"
+            md += f"- **Cores:** {cpu['Cores']} ({cpu['Logical Processors']} Threads)\n"
+            md += f"- **Max Clock Speed:** {cpu['Max Clock Speed']}\n"
+            md += f"- **L2 Cache:** {cpu['L2 Cache']} | **L3 Cache:** {cpu['L3 Cache']}\n"
             md += "\n"
 
         # Motherboard
-        md += "## 🖨️ Placa Base (Motherboard)\n"
+        md += "## 🖨️ Motherboard\n"
         for board in self.get_motherboard_info():
-            md += f"- **Fabricante:** {board['Manufacturer']}\n"
-            md += f"- **Modelo:** {board['Product']}\n"
-            md += f"- **Versión:** {board['Version']}\n"
+            md += f"- **Manufacturer:** {board['Manufacturer']}\n"
+            md += f"- **Model:** {board['Product']}\n"
+            md += f"- **Version:** {board['Version']}\n"
             md += f"- **Serial:** {board['Serial Number']}\n"
             md += "\n"
 
         # GPU
-        md += "## 🎮 Tarjeta Gráfica (GPU)\n"
+        md += "## 🎮 Graphics Card (GPU)\n"
         for gpu in self.get_gpu_info():
-            md += f"- **Modelo:** {gpu['Name']}\n"
+            md += f"- **Model:** {gpu['Name']}\n"
             md += f"- **VRAM:** {gpu['VRAM']}\n"
             md += f"- **Driver:** v{gpu['Driver Version']}\n"
-            md += f"- **Resolución Actual:** {gpu['Resolution']} @ {gpu['Refresh Rate']}\n"
-            md += f"- **Estado:** {gpu['Status']}\n"
+            md += f"- **Current Resolution:** {gpu['Resolution']} @ {gpu['Refresh Rate']}\n"
+            md += f"- **Status:** {gpu['Status']}\n"
             md += "\n"
 
         # RAM
         ram_data = self.get_ram_info()
-        md += "## 🧠 Memoria RAM\n"
-        md += f"- **Capacidad Total:** {ram_data['Total Capacity']}\n\n"
+        md += "## 🧠 RAM Memory\n"
+        md += f"- **Total Capacity:** {ram_data['Total Capacity']}\n\n"
         if ram_data['Modules']:
-            md += "| Slot | Fabricante | Capacidad | Velocidad | Tipo | Part Number |\n"
+            md += "| Slot | Manufacturer | Capacity | Speed | Type | Part Number |\n"
             md += "|------|-----------|-----------|-----------|------|-------------|\n"
             for mod in ram_data['Modules']:
                 md += f"| {mod['Slot']} | {mod['Manufacturer']} | {mod['Capacity']} | {mod['Speed']} | {mod['Type']} | {mod['Part Number']} |\n"
         md += "\n"
 
         # Storage
-        md += "## 💾 Almacenamiento\n"
+        md += "## 💾 Storage\n"
         storage = self.get_storage_info()
         if storage:
-            md += "| Modelo | Capacidad | Tipo | Bus | Estado | Firmware |\n"
+            md += "| Model | Capacity | Type | Bus | Health | Firmware |\n"
             md += "|--------|-----------|------|-----|--------|----------|\n"
             for disk in storage:
                 md += f"| {disk['Model']} | {disk['Size']} | {disk['Type']} | {disk['Bus']} | {disk['Health']} | {disk['Firmware']} |\n"
         md += "\n"
 
         # Network
-        md += "## 🌐 Red\n"
+        md += "## 🌐 Network\n"
         network = self.get_network_info()
         for adapter in network:
             md += f"- **{adapter['Name']}**\n"
-            md += f"  - Fabricante: {adapter['Manufacturer']}\n"
+            md += f"  - Manufacturer: {adapter['Manufacturer']}\n"
             md += f"  - MAC: {adapter['MAC']}\n"
-            md += f"  - Tipo: {adapter['Type']}\n"
-            md += f"  - Velocidad: {adapter['Speed']}\n"
+            md += f"  - Type: {adapter['Type']}\n"
+            md += f"  - Speed: {adapter['Speed']}\n"
         if not network:
-            md += "- No se detectaron adaptadores físicos.\n"
+            md += "- No physical adapters detected.\n"
         md += "\n"
 
         # Monitors
-        md += "## 🖥️ Monitores\n"
+        md += "## 🖥️ Monitors\n"
         monitors = self.get_monitor_info()
         for mon in monitors:
             md += f"- **{mon['Manufacturer Code']}** — {mon['Model']}\n"
             md += f"  - Serial: {mon['Serial']}\n"
-            md += f"  - Año de fabricación: {mon['Year']}\n"
+            md += f"  - Manufacture Year: {mon['Year']}\n"
         if not monitors:
-            md += "- No detectado\n"
+            md += "- Not detected\n"
         md += "\n"
 
         # USB Peripherals
         periph = self.get_usb_peripherals()
-        md += "## ⌨️ Periféricos USB\n\n"
+        md += "## ⌨️ USB Peripherals\n\n"
 
         sections = [
-            ("Teclados", "Keyboards"),
-            ("Ratones / Apuntadores", "Mice"),
-            ("Audio USB", "Audio"),
+            ("Keyboards", "Keyboards"),
+            ("Mice / Pointers", "Mice"),
+            ("USB Audio", "Audio"),
             ("Webcams", "Webcams"),
-            ("Controladores / Gamepads", "Controllers"),
-            ("Otros Dispositivos USB", "Other USB"),
+            ("Controllers / Gamepads", "Controllers"),
+            ("Other USB Devices", "Other USB"),
         ]
 
         for title, key in sections:
@@ -667,20 +667,20 @@ class HardwareDetector:
                     md += f"- **{item['Name']}**\n"
                     md += f"  - VID: `{item['VID']}` | PID: `{item['PID']}`\n"
             else:
-                md += "- No detectado\n"
+                md += "- Not detected\n"
             md += "\n"
 
         # System Audio Devices
         sys_audio = periph.get("System Audio", [])
-        md += "### Dispositivos de Audio del Sistema\n"
+        md += "### System Audio Devices\n"
         for item in set(sys_audio):
             md += f"- {item}\n"
         if not sys_audio:
-            md += "- No detectado\n"
+            md += "- Not detected\n"
         md += "\n"
 
         md += "---\n"
-        md += f"*Generado por PCDetection*\n"
+        md += f"*Generated by PCDetection*\n"
 
         return md
 
