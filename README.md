@@ -16,7 +16,8 @@ PCDetection is a lightweight, modern Windows hardware scanner written in Python.
 ---
 
 ## Screenshot
-*(Add a screenshot of the application interface here)*
+<img width="682" height="612" alt="image" src="https://github.com/user-attachments/assets/bca7f1db-b1c9-4b2a-b6b6-cd2c30cf91d3" />
+
 
 ---
 
