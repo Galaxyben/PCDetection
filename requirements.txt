@@ -1,0 +1,5 @@
+wmi
+psutil
+PyQt6
+pyinstaller
+pypiwin32
