@@ -3,6 +3,6 @@
 
 Write-Host "Compilando PCDetection a ejecutable..."
 
-pyinstaller --noconfirm --onefile --windowed --name "PCDetection" .\app.py
+pyinstaller --noconfirm --onefile --windowed --name "PCDetection" --icon "icon.ico" --add-data "icon.png;." .\app.py
 
 Write-Host "Compilación terminada. El archivo ejecutable está en la carpeta 'dist'."

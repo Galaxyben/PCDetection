@@ -129,6 +129,14 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(620, 520)
         self.resize(680, 580)
 
+        # Set window icon
+        icon_path = "icon.png"
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            icon_path = os.path.join(sys._MEIPASS, "icon.png")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+
+
         self._markdown_content = ""
         self._bridge = SignalBridge()
         self._bridge.finished.connect(self._on_scan_finished)
